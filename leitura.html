@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sua leitura pessoal | Eu no Meu Lugar</title>
+  <meta name="description" content="Antes de te contar tudo sobre a sessão, eu prefiro te ouvir primeiro." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0c0b0f;
+      --bg2: #13111a;
+      --bg3: #1a1724;
+      --accent: #c4a0c8;
+      --accent2: #9b6ea8;
+      --gold: #c9a96e;
+      --text: #f0eaf4;
+      --muted: #9b96a8;
+      --border: #2a2535;
+      --border2: #3a3050;
+      --error: #d98a8a;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* PROGRESS BAR */
+    .progress-wrap {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--border);
+      z-index: 10;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* SCREEN LAYOUT */
+    .screen-outer {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px 40px;
+      min-height: 100vh;
+    }
+
+    .screen {
+      max-width: 560px;
+      width: 100%;
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .screen.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .screen h1, .screen h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 5.5vw, 36px);
+      line-height: 1.3;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .screen .desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"], textarea {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      color: var(--text);
+      margin-bottom: 8px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent2);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .option {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 15px;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      text-align: left;
+    }
+
+    .option:hover { border-color: var(--border2); }
+    .option.selected {
+      border-color: var(--accent2);
+      background: rgba(196,160,200,0.08);
+    }
+
+    .nav-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent2), #7a4fa0);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 15px 32px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: opacity 0.2s, transform 0.15s;
+      box-shadow: 0 8px 28px rgba(155,110,168,0.25);
+    }
+
+    .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .btn-voltar {
+      background: none;
+      box-shadow: none;
+      color: var(--muted);
+      font-size: 14px;
+      padding: 15px 16px;
+    }
+
+    .btn-voltar:hover { color: var(--text); transform: none; opacity: 1; }
+
+    .error-msg {
+      color: var(--error);
+      font-size: 13px;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .error-msg.show { display: block; }
+
+    /* INTRO / OUTRO screens */
+    .center-screen { text-align: center; }
+    .center-screen .btn { margin-top: 8px; }
+
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,169,110,0.4);
+      border-radius: 100px;
+      padding: 5px 18px;
+      margin-bottom: 28px;
+    }
+
+    .outro-icon {
+      font-family: 'DM Serif Display', serif;
+      font-size: 48px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 480px) {
+      .screen-outer { padding: 64px 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="progress-wrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="screen-outer">
+    <form id="leituraForm">
+
+      <!-- TELA 0: ABERTURA -->
+      <div class="screen active center-screen" data-screen="0">
+        <span class="tag">Eu no Meu Lugar</span>
+        <h1>Antes de te contar tudo sobre a sessão, eu prefiro te ouvir primeiro.</h1>
+        <p class="desc">Responda algumas perguntas rápidas e eu mesma vou te mandar um vídeo pessoal com a minha leitura do que você trouxer aqui. Leva menos de 3 minutos.</p>
+        <button type="button" class="btn" onclick="nextScreen()">Quero começar</button>
+      </div>
+
+      <!-- TELA 1: NOME -->
+      <div class="screen" data-screen="1">
+        <div class="step-label">1 de 7</div>
+        <h2>Como você gostaria que eu te chamasse?</h2>
+        <input type="text" id="nome" name="nome" placeholder="Seu nome" autocomplete="name" />
+        <div class="error-msg" id="err-nome">Preciso do seu nome pra continuar.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" onclick="validateAndNext('nome')">Próxima</button>
+        </div>
+      </div>
+
+      <!-- TELA 2: CONTATO -->
+      <div class="screen" data-screen="2">
+        <div class="step-label">2 de 7</div>
+        <h2>Pra onde eu te mando meu vídeo com a leitura?</h2>
+        <p class="desc">WhatsApp com DDD, ou seu e-mail.</p>
+        <input type="text" id="contato" name="contato" placeholder="Ex: (11) 99999-9999 ou seuemail@exemplo.com" autocomplete="tel" />
+        <div class="error-msg" id="err-contato">Preciso de um jeito de te responder.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" onclick="validateAndNext('contato')">Próxima</button>
+        </div>
+      </div>
+
+      <!-- TELA 3: CLT OU CNPJ -->
+      <div class="screen" data-screen="3">
+        <div class="step-label">3 de 7</div>
+        <h2>Hoje você é CLT ou toca seu próprio negócio?</h2>
+        <div class="options" id="opt-situacao">
+          <div class="option" data-value="CLT">CLT</div>
+          <div class="option" data-value="CNPJ">CNPJ</div>
+          <div class="option" data-value="Os dois">Os dois</div>
+        </div>
+        <input type="hidden" id="situacao" name="situacao" />
+        <div class="error-msg" id="err-situacao">Escolhe uma opção pra continuar.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" onclick="validateAndNext('situacao')">Próxima</button>
+        </div>
+      </div>
+
+      <!-- TELA 4: A CENA REAL -->
+      <div class="screen" data-screen="4">
+        <div class="step-label">4 de 7</div>
+        <h2>Me conta uma situação recente no trabalho que se repete e já te incomoda.</h2>
+        <p class="desc">Pode ser uma frase, não precisa ser um textão.</p>
+        <textarea id="cena" name="cena" placeholder="Escreva aqui"></textarea>
+        <div class="error-msg" id="err-cena">Me conta um pouquinho pra eu poder te ler direito.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" onclick="validateAndNext('cena')">Próxima</button>
+        </div>
+      </div>
+
+      <!-- TELA 5: O PADRÃO EM AÇÃO -->
+      <div class="screen" data-screen="5">
+        <div class="step-label">5 de 7</div>
+        <h2>Quando alguém discorda de você no trabalho, o que você mais faz?</h2>
+        <div class="options" id="opt-padrao">
+          <div class="option" data-value="Assumo e resolvo antes de discutir mais">Assumo e resolvo antes de discutir mais</div>
+          <div class="option" data-value="Fico preocupada com o que vão pensar de mim">Fico preocupada com o que vão pensar de mim</div>
+          <div class="option" data-value="Só me convenço quando tenho certeza absoluta">Só me convenço quando tenho certeza absoluta</div>
+          <div class="option" data-value="Cedo pra não criar climão">Cedo pra não criar climão</div>
+        </div>
+        <input type="hidden" id="padrao" name="padrao" />
+        <div class="error-msg" id="err-padrao">Escolhe uma opção pra continuar.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" onclick="validateAndNext('padrao')">Próxima</button>
+        </div>
+      </div>
+
+      <!-- TELA 6: O CUSTO -->
+      <div class="screen" data-screen="6">
+        <div class="step-label">6 de 7</div>
+        <h2>O que isso já te custou?</h2>
+        <p class="desc">Pode ser dinheiro, oportunidade, energia, ou só a sensação de estar sempre cansada.</p>
+        <textarea id="custo" name="custo" placeholder="Escreva aqui"></textarea>
+        <div class="error-msg" id="err-custo">Me conta um pouquinho pra eu entender o peso disso.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" onclick="validateAndNext('custo')">Próxima</button>
+        </div>
+      </div>
+
+      <!-- TELA 7: POR QUE AGORA -->
+      <div class="screen" data-screen="7">
+        <div class="step-label">7 de 7</div>
+        <h2>Por que agora?</h2>
+        <p class="desc">O que te fez procurar isso hoje, e não há 6 meses ou daqui a 6 meses?</p>
+        <textarea id="agora" name="agora" placeholder="Escreva aqui"></textarea>
+        <div class="error-msg" id="err-agora">Me conta um pouquinho antes de enviar.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" id="submitBtn" onclick="submitForm()">Enviar e receber minha leitura</button>
+        </div>
+      </div>
+
+      <!-- TELA 8: ENCERRAMENTO -->
+      <div class="screen center-screen" data-screen="8">
+        <div class="outro-icon">✓</div>
+        <h1>Recebi.</h1>
+        <p class="desc">Vou assistir com calma e te responder em vídeo em até 48 horas. Enquanto isso, respira: você já deu um passo que a maioria nunca dá.</p>
+      </div>
+
+      <!-- TELA DE ERRO NO ENVIO -->
+      <div class="screen center-screen" data-screen="9">
+        <div class="outro-icon">!</div>
+        <h1>Algo não funcionou.</h1>
+        <p class="desc">Não consegui enviar sua resposta agora. Tenta de novo em alguns instantes, ou me chama direto no <a href="https://wa.me/5511920701603" style="color:var(--accent);">WhatsApp</a>.</p>
+        <button type="button" class="btn" onclick="submitForm()">Tentar de novo</button>
+      </div>
+
+    </form>
+  </div>
+
+  <footer>
+    <p>© 2026 Analu Figueyra · <a href="https://instagram.com/analufigueyra" target="_blank">@analufigueyra</a></p>
+  </footer>
+
+  <script>
+    var TOTAL_SCREENS = 9; // 0 a 8 (9 = tela de erro, fora da contagem de progresso)
+    var current = 0;
+
+    function updateProgress() {
+      var pct = Math.min((current / 8) * 100, 100);
+      document.getElementById('progressBar').style.width = pct + '%';
+    }
+
+    function showScreen(n) {
+      var screens = document.querySelectorAll('.screen');
+      screens.forEach(function (s) {
+        s.classList.remove('active');
+      });
+      var target = document.querySelector('.screen[data-screen="' + n + '"]');
+      if (target) target.classList.add('active');
+      current = n;
+      updateProgress();
+      window.scrollTo(0, 0);
+    }
+
+    function nextScreen() {
+      showScreen(current + 1);
+    }
+
+    function prevScreen() {
+      showScreen(current - 1);
+    }
+
+    // Selecao de opcoes (multipla escolha)
+    document.querySelectorAll('.options').forEach(function (group) {
+      group.addEventListener('click', function (e) {
+        var opt = e.target.closest('.option');
+        if (!opt) return;
+        group.querySelectorAll('.option').forEach(function (o) {
+          o.classList.remove('selected');
+        });
+        opt.classList.add('selected');
+        var hiddenInput = group.parentElement.querySelector('input[type="hidden"]');
+        hiddenInput.value = opt.getAttribute('data-value');
+      });
+    });
+
+    function validateAndNext(fieldId) {
+      var field = document.getElementById(fieldId);
+      var errMsg = document.getElementById('err-' + fieldId);
+      var value = field.value.trim();
+
+      if (!value) {
+        errMsg.classList.add('show');
+        return;
+      }
+      errMsg.classList.remove('show');
+      nextScreen();
+    }
+
+    function submitForm() {
+      // valida o ultimo campo antes de enviar
+      var agoraField = document.getElementById('agora');
+      var errMsg = document.getElementById('err-agora');
+      if (!agoraField.value.trim()) {
+        errMsg.classList.add('show');
+        return;
+      }
+      errMsg.classList.remove('show');
+
+      var submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando...';
+
+      var data = {
+        nome: document.getElementById('nome').value,
+        contato: document.getElementById('contato').value,
+        situacao: document.getElementById('situacao').value,
+        cena: document.getElementById('cena').value,
+        padrao: document.getElementById('padrao').value,
+        custo: document.getElementById('custo').value,
+        agora: document.getElementById('agora').value
+      };
+
+      fetch('https://formspree.io/f/myezzbak', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(function (response) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Enviar e receber minha leitura';
+          if (response.ok) {
+            showScreen(8);
+          } else {
+            showScreen(9);
+          }
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Enviar e receber minha leitura';
+          showScreen(9);
+        });
+    }
+
+    updateProgress();
+  </script>
+
+</body>
+</html>

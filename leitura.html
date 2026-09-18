@@ -376,27 +376,9 @@
         </div>
       </div>
 
-      <!-- TELA 7: FORMATO PREFERIDO -->
+      <!-- TELA 7: O CUSTO -->
       <div class="screen" data-screen="7">
-        <div class="step-label">7 de 9</div>
-        <h2>Prefere que eu te responda em vídeo, áudio, ou por escrito?</h2>
-        <p class="desc">Vou gravar sua leitura pessoalmente de qualquer forma, só quero te entregar do jeito que for melhor pra você.</p>
-        <div class="options" id="opt-formato">
-          <div class="option" data-value="Vídeo">Vídeo</div>
-          <div class="option" data-value="Áudio">Áudio</div>
-          <div class="option" data-value="Escrito">Escrito</div>
-        </div>
-        <input type="hidden" id="formato" name="formato" />
-        <div class="error-msg" id="err-formato">Escolhe uma opção pra continuar.</div>
-        <div class="nav-row">
-          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('formato')">Próxima</button>
-        </div>
-      </div>
-
-      <!-- TELA 8: O CUSTO -->
-      <div class="screen" data-screen="8">
-        <div class="step-label">8 de 9</div>
+        <div class="step-label">7 de 8</div>
         <h2>O que isso já te custou?</h2>
         <p class="desc">Pode ser dinheiro, oportunidade, energia, ou só a sensação de estar sempre cansada.</p>
         <textarea id="custo" name="custo" placeholder="Escreva aqui"></textarea>
@@ -407,9 +389,9 @@
         </div>
       </div>
 
-      <!-- TELA 9: POR QUE AGORA -->
-      <div class="screen" data-screen="9">
-        <div class="step-label">9 de 9</div>
+      <!-- TELA 8: POR QUE AGORA -->
+      <div class="screen" data-screen="8">
+        <div class="step-label">8 de 8</div>
         <h2>Por que agora?</h2>
         <p class="desc">O que te fez procurar isso hoje, e não há 6 meses ou daqui a 6 meses?</p>
         <textarea id="agora" name="agora" placeholder="Escreva aqui"></textarea>
@@ -420,16 +402,18 @@
         </div>
       </div>
 
-      <!-- TELA 10: ENCERRAMENTO -->
-      <div class="screen center-screen" data-screen="10">
+      <!-- TELA 9: ENCERRAMENTO -->
+      <div class="screen center-screen" data-screen="9">
         <div class="outro-icon">✓</div>
         <h1>Recebi.</h1>
-        <p class="desc">Vou assistir com calma e te responder em <span id="formatoDisplay">vídeo pessoal</span> em até 48 horas, no mesmo contato que você deixou aqui. Enquanto isso, respira: você já deu um passo que a maioria nunca dá.</p>
+        <p class="desc">Vou assistir com calma e te responder em vídeo pessoal em até 48 horas, no mesmo contato que você deixou aqui. Enquanto isso, respira: você já deu um passo que a maioria nunca dá.</p>
+        <a href="https://pay.kiwify.com.br/JT2MyLo" class="btn" style="margin-top:8px;">Quero minha sessão</a>
+        <br>
         <a href="index.html" class="outro-link">Enquanto espera, veja como funciona a sessão</a>
       </div>
 
       <!-- TELA DE ERRO NO ENVIO -->
-      <div class="screen center-screen" data-screen="11">
+      <div class="screen center-screen" data-screen="10">
         <div class="outro-icon">!</div>
         <h1>Algo não funcionou.</h1>
         <p class="desc">Não consegui enviar sua resposta agora. Tenta de novo em alguns instantes, ou me chama direto no <a href="https://wa.me/5511920701603" style="color:var(--accent);">WhatsApp</a>.</p>
@@ -447,7 +431,7 @@
     var current = 0;
 
     function updateProgress() {
-      var pct = Math.min((current / 9) * 100, 100);
+      var pct = Math.min((current / 8) * 100, 100);
       document.getElementById('progressBar').style.width = pct + '%';
     }
 
@@ -554,13 +538,6 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Enviando...';
 
-      var formato = document.getElementById('formato').value;
-      var formatoTexto = 'uma resposta pessoal';
-      if (formato === 'Vídeo') formatoTexto = 'vídeo pessoal';
-      else if (formato === 'Áudio') formatoTexto = 'áudio pessoal';
-      else if (formato === 'Escrito') formatoTexto = 'uma resposta por escrito';
-      document.getElementById('formatoDisplay').textContent = formatoTexto;
-
       var data = {
         nome: document.getElementById('nome').value,
         contato: document.getElementById('contato').value,
@@ -569,7 +546,6 @@
         cena_detalhe: document.getElementById('cena_detalhe').value,
         padrao: document.getElementById('padrao').value,
         prontidao: document.getElementById('prontidao').value,
-        formato: formato,
         custo: document.getElementById('custo').value,
         agora: document.getElementById('agora').value
       };
@@ -586,15 +562,15 @@
           submitBtn.disabled = false;
           submitBtn.textContent = 'Enviar e receber minha leitura';
           if (response.ok) {
-            showScreen(10);
+            showScreen(9);
           } else {
-            showScreen(11);
+            showScreen(10);
           }
         })
         .catch(function () {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Enviar e receber minha leitura';
-          showScreen(11);
+          showScreen(10);
         });
     }
 

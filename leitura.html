@@ -288,17 +288,40 @@
         <div class="error-msg" id="err-situacao">Escolhe uma opção pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('situacao')">Próxima</button>
+          <button type="button" class="btn" onclick="goToCena()">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 4: A CENA REAL -->
+      <!-- TELA 4: A CENA REAL (ramifica por CLT/CNPJ) -->
       <div class="screen" data-screen="4">
         <div class="step-label">4 de 7</div>
-        <h2>Me conta uma situação recente no trabalho que se repete e já te incomoda.</h2>
-        <p class="desc">Pode ser uma frase, não precisa ser um textão.</p>
-        <textarea id="cena" name="cena" placeholder="Escreva aqui"></textarea>
-        <div class="error-msg" id="err-cena">Me conta um pouquinho pra eu poder te ler direito.</div>
+        <h2>Qual dessas frases mais parece com a sua semana?</h2>
+        <p class="desc">Escolhe a que mais dói de reconhecer.</p>
+
+        <div id="cena-options-wrapper">
+          <div class="options" id="opt-cena-clt" style="display:none;">
+            <div class="option" data-value="Assumo mais do que deveria porque tenho medo de que, se eu não fizer, dê errado.">Assumo mais do que deveria porque tenho medo de que, se eu não fizer, dê errado.</div>
+            <div class="option" data-value="Entrego mais do que pedem porque isso me faz sentir que mereço estar aqui.">Entrego mais do que pedem porque isso me faz sentir que mereço estar aqui.</div>
+            <div class="option" data-value="Engulo o que eu discordo pra não criar climão, e depois fico remoendo sozinha.">Engulo o que eu discordo pra não criar climão, e depois fico remoendo sozinha.</div>
+            <div class="option" data-value="Sei exatamente o que preciso mudar, mas continuo fazendo do mesmo jeito.">Sei exatamente o que preciso mudar, mas continuo fazendo do mesmo jeito.</div>
+            <div class="option" data-value="Evito me candidatar ou pedir o que mereço porque tenho medo de aparecer demais.">Evito me candidatar ou pedir o que mereço porque tenho medo de aparecer demais.</div>
+          </div>
+
+          <div class="options" id="opt-cena-cnpj" style="display:none;">
+            <div class="option" data-value="Já baixei meu preço no meio da negociação só pra não perder o cliente.">Já baixei meu preço no meio da negociação só pra não perder o cliente.</div>
+            <div class="option" data-value="Enrolo pra mandar a proposta porque tenho medo de parecer caro demais.">Enrolo pra mandar a proposta porque tenho medo de parecer caro demais.</div>
+            <div class="option" data-value="Entrego mais do que foi combinado pra justificar o valor que cobrei.">Entrego mais do que foi combinado pra justificar o valor que cobrei.</div>
+            <div class="option" data-value="Evito aparecer oferecendo meu trabalho porque parece que estou me vendendo demais.">Evito aparecer oferecendo meu trabalho porque parece que estou me vendendo demais.</div>
+            <div class="option" data-value="Já travei na hora de simplesmente falar o preço em voz alta.">Já travei na hora de simplesmente falar o preço em voz alta.</div>
+          </div>
+        </div>
+
+        <input type="hidden" id="cena" name="cena" />
+        <div class="error-msg" id="err-cena">Escolhe uma opção pra continuar.</div>
+
+        <p class="desc" style="margin-top:20px;margin-bottom:8px;">Quer contar com suas palavras? (opcional)</p>
+        <textarea id="cena_detalhe" name="cena_detalhe" placeholder="Escreva aqui, se quiser"></textarea>
+
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
           <button type="button" class="btn" onclick="validateAndNext('cena')">Próxima</button>
@@ -310,10 +333,10 @@
         <div class="step-label">5 de 7</div>
         <h2>Quando alguém discorda de você no trabalho, o que você mais faz?</h2>
         <div class="options" id="opt-padrao">
-          <div class="option" data-value="Assumo e resolvo antes de discutir mais">Assumo e resolvo antes de discutir mais</div>
-          <div class="option" data-value="Fico preocupada com o que vão pensar de mim">Fico preocupada com o que vão pensar de mim</div>
-          <div class="option" data-value="Só me convenço quando tenho certeza absoluta">Só me convenço quando tenho certeza absoluta</div>
-          <div class="option" data-value="Cedo pra não criar climão">Cedo pra não criar climão</div>
+          <div class="option" data-value="Assumo e resolvo antes que vire outro problema pra mim resolver.">Assumo e resolvo antes que vire outro problema pra mim resolver.</div>
+          <div class="option" data-value="Fico remoendo depois se eu deveria ter dito alguma coisa.">Fico remoendo depois se eu deveria ter dito alguma coisa.</div>
+          <div class="option" data-value="Só me convenço quando tenho certeza absoluta que estou certa.">Só me convenço quando tenho certeza absoluta que estou certa.</div>
+          <div class="option" data-value="Cedo pra não criar climão, mesmo sabendo que eu tinha razão.">Cedo pra não criar climão, mesmo sabendo que eu tinha razão.</div>
         </div>
         <input type="hidden" id="padrao" name="padrao" />
         <div class="error-msg" id="err-padrao">Escolhe uma opção pra continuar.</div>
@@ -400,8 +423,9 @@
       showScreen(current - 1);
     }
 
-    // Selecao de opcoes (multipla escolha)
+    // Selecao de opcoes (multipla escolha) para grupos simples (padrao, situacao)
     document.querySelectorAll('.options').forEach(function (group) {
+      if (group.id === 'opt-cena-clt' || group.id === 'opt-cena-cnpj') return;
       group.addEventListener('click', function (e) {
         var opt = e.target.closest('.option');
         if (!opt) return;
@@ -413,6 +437,47 @@
         hiddenInput.value = opt.getAttribute('data-value');
       });
     });
+
+    // Selecao de opcoes da tela "cena real" (compartilha um unico campo hidden entre dois grupos ramificados)
+    var cenaWrapper = document.getElementById('cena-options-wrapper');
+    var cenaHidden = document.getElementById('cena');
+    cenaWrapper.addEventListener('click', function (e) {
+      var opt = e.target.closest('.option');
+      if (!opt) return;
+      cenaWrapper.querySelectorAll('.option').forEach(function (o) {
+        o.classList.remove('selected');
+      });
+      opt.classList.add('selected');
+      cenaHidden.value = opt.getAttribute('data-value');
+    });
+
+    function goToCena() {
+      var situacaoField = document.getElementById('situacao');
+      var errMsg = document.getElementById('err-situacao');
+      var situacao = situacaoField.value.trim();
+
+      if (!situacao) {
+        errMsg.classList.add('show');
+        return;
+      }
+      errMsg.classList.remove('show');
+
+      var cltGroup = document.getElementById('opt-cena-clt');
+      var cnpjGroup = document.getElementById('opt-cena-cnpj');
+
+      if (situacao === 'CLT') {
+        cltGroup.style.display = '';
+        cnpjGroup.style.display = 'none';
+      } else if (situacao === 'CNPJ') {
+        cltGroup.style.display = 'none';
+        cnpjGroup.style.display = '';
+      } else {
+        cltGroup.style.display = '';
+        cnpjGroup.style.display = '';
+      }
+
+      nextScreen();
+    }
 
     function validateAndNext(fieldId) {
       var field = document.getElementById(fieldId);
@@ -446,6 +511,7 @@
         contato: document.getElementById('contato').value,
         situacao: document.getElementById('situacao').value,
         cena: document.getElementById('cena').value,
+        cena_detalhe: document.getElementById('cena_detalhe').value,
         padrao: document.getElementById('padrao').value,
         custo: document.getElementById('custo').value,
         agora: document.getElementById('agora').value

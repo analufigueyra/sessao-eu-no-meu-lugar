@@ -87,8 +87,8 @@
 
     .screen h1, .screen h2 {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(26px, 5.5vw, 36px);
-      line-height: 1.3;
+      font-size: clamp(24px, 5vw, 34px);
+      line-height: 1.35;
       color: #fff;
       margin-bottom: 16px;
     }
@@ -97,8 +97,10 @@
       font-size: 15px;
       color: var(--muted);
       line-height: 1.7;
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
+
+    .screen .desc:last-of-type { margin-bottom: 28px; }
 
     input[type="text"], input[type="email"], input[type="tel"], textarea {
       width: 100%;
@@ -147,6 +149,13 @@
     .option.selected {
       border-color: var(--accent2);
       background: rgba(196,160,200,0.08);
+    }
+
+    .multi-hint {
+      font-size: 12px;
+      color: var(--gold);
+      margin-bottom: 14px;
+      margin-top: -8px;
     }
 
     .nav-row {
@@ -219,18 +228,6 @@
       margin-bottom: 20px;
     }
 
-    .outro-link {
-      display: inline-block;
-      margin-top: 20px;
-      font-size: 14px;
-      color: var(--accent);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(196,160,200,0.4);
-      padding-bottom: 2px;
-    }
-
-    .outro-link:hover { color: var(--text); }
-
     footer {
       text-align: center;
       padding: 24px;
@@ -258,234 +255,299 @@
       <div class="screen active center-screen" data-screen="0">
         <span class="tag">Eu no Meu Lugar</span>
         <h1>Antes de te contar tudo sobre a sessão, eu prefiro te ouvir primeiro.</h1>
-        <p class="desc">Responda algumas perguntas rápidas e eu mesma vou te mandar uma resposta pessoal com a minha leitura do que você trouxer aqui. Leva menos de 3 minutos.</p>
+        <p class="desc">Esse formulário leva poucos minutos.</p>
+        <p class="desc">Quero entender o que está acontecendo no seu trabalho hoje e perceber se uma sessão individual comigo realmente faz sentido para você.</p>
         <button type="button" class="btn" onclick="nextScreen()">Quero começar</button>
       </div>
 
-      <!-- TELA 1: O QUE MAIS INCOMODA -->
+      <!-- Q1 -->
       <div class="screen" data-screen="1">
-        <div class="step-label">1 de 12</div>
-        <h2>O que mais está te incomodando na sua vida profissional hoje?</h2>
-        <div class="options" id="opt-incomodo">
-          <div class="option" data-value="Trabalho muito e não avanço como gostaria.">Trabalho muito e não avanço como gostaria.</div>
-          <div class="option" data-value="Tenho dificuldade de me posicionar.">Tenho dificuldade de me posicionar.</div>
-          <div class="option" data-value="Sei o que preciso fazer, mas continuo adiando.">Sei o que preciso fazer, mas continuo adiando.</div>
-          <div class="option" data-value="Assumo coisas demais e não consigo soltar.">Assumo coisas demais e não consigo soltar.</div>
-          <div class="option" data-value="Tenho dificuldade de cobrar ou vender meu trabalho.">Tenho dificuldade de cobrar ou vender meu trabalho.</div>
-          <div class="option" data-value="Estou num momento de decisão profissional.">Estou num momento de decisão profissional.</div>
-          <div class="option" data-value="Outro">Outro</div>
+        <div class="step-label">1 de 15</div>
+        <h2>Qual dessas situações aconteceu com você recentemente no trabalho?</h2>
+        <div class="options" id="opt-q1">
+          <div class="option" data-value="Fiquei além do horário porque senti que não podia deixar aquilo para amanhã">Fiquei além do horário porque senti que não podia deixar aquilo para amanhã</div>
+          <div class="option" data-value="Peguei uma tarefa que era de outra pessoa porque achei mais fácil fazer eu mesma">Peguei uma tarefa que era de outra pessoa porque achei mais fácil fazer eu mesma</div>
+          <div class="option" data-value="Deixei de falar o que pensava numa reunião para não criar clima">Deixei de falar o que pensava numa reunião para não criar clima</div>
+          <div class="option" data-value="Baixei preço, dei desconto ou entreguei mais sem a pessoa pedir">Baixei preço, dei desconto ou entreguei mais sem a pessoa pedir</div>
+          <div class="option" data-value="Adiei uma conversa que eu sabia que precisava ter">Adiei uma conversa que eu sabia que precisava ter</div>
+          <div class="option" data-value="Vi outra pessoa sendo escolhida e pensei: mas eu faço muito mais">Vi outra pessoa sendo escolhida e pensei: "mas eu faço muito mais"</div>
+          <div class="option" data-value="Outra situação">Outra situação</div>
         </div>
-        <input type="hidden" id="incomodo" name="incomodo" />
-        <div id="incomodo-detalhe-wrap" style="display:none;">
-          <input type="text" id="incomodo_detalhe" name="incomodo_detalhe" placeholder="Conte em poucas palavras" />
+        <input type="hidden" id="q1_situacao" name="1_situacao_recente" />
+        <div id="q1-detalhe-wrap" style="display:none;">
+          <input type="text" id="q1_detalhe" name="1_situacao_detalhe" placeholder="Conte em poucas palavras" />
         </div>
-        <div class="error-msg" id="err-incomodo">Escolhe uma opção pra continuar.</div>
+        <div class="error-msg" id="err-q1_situacao">Escolhe uma opção pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('incomodo')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q1_situacao')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 2: CLT OU CNPJ -->
+      <!-- Q2 -->
       <div class="screen" data-screen="2">
-        <div class="step-label">2 de 12</div>
-        <h2>Hoje você é CLT ou toca seu próprio negócio?</h2>
-        <div class="options" id="opt-situacao">
-          <div class="option" data-value="CLT">CLT</div>
-          <div class="option" data-value="CNPJ">CNPJ</div>
-          <div class="option" data-value="Os dois">Os dois</div>
+        <div class="step-label">2 de 15</div>
+        <h2>Quando alguém não faz do jeito que você faria, o que costuma acontecer?</h2>
+        <div class="options" id="opt-q2">
+          <div class="option" data-value="Eu assumo e termino">Eu assumo e termino</div>
+          <div class="option" data-value="Eu refaço depois">Eu refaço depois</div>
+          <div class="option" data-value="Eu fico irritada, mas não falo">Eu fico irritada, mas não falo</div>
+          <div class="option" data-value="Eu explico várias vezes até sair do meu jeito">Eu explico várias vezes até sair do meu jeito</div>
+          <div class="option" data-value="Eu consigo deixar a pessoa resolver e só acompanho">Eu consigo deixar a pessoa resolver e só acompanho</div>
         </div>
-        <input type="hidden" id="situacao" name="situacao" />
-        <div class="error-msg" id="err-situacao">Escolhe uma opção pra continuar.</div>
+        <input type="hidden" id="q2_reacao" name="2_reacao_ao_outro" />
+        <div class="error-msg" id="err-q2_reacao">Escolhe uma opção pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="goToCena()">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q2_reacao')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 3: A CENA REAL (ramifica por CLT/CNPJ) -->
+      <!-- Q3 -->
       <div class="screen" data-screen="3">
-        <div class="step-label">3 de 12</div>
-        <h2>Qual dessas frases mais parece com a sua semana?</h2>
-        <p class="desc">Escolhe a que mais dói de reconhecer, mesmo que mais de uma seja verdade.</p>
-
-        <div id="cena-options-wrapper">
-          <div class="options" id="opt-cena-clt" style="display:none;">
-            <div class="option" data-value="Assumo mais do que deveria porque tenho medo de que, se eu não fizer, dê errado.">Assumo mais do que deveria porque tenho medo de que, se eu não fizer, dê errado.</div>
-            <div class="option" data-value="Entrego mais do que pedem porque isso me faz sentir que mereço estar aqui.">Entrego mais do que pedem porque isso me faz sentir que mereço estar aqui.</div>
-            <div class="option" data-value="Engulo o que eu discordo pra não criar climão, e depois fico remoendo sozinha.">Engulo o que eu discordo pra não criar climão, e depois fico remoendo sozinha.</div>
-            <div class="option" data-value="Sei exatamente o que preciso mudar, mas continuo fazendo do mesmo jeito.">Sei exatamente o que preciso mudar, mas continuo fazendo do mesmo jeito.</div>
-            <div class="option" data-value="Evito me candidatar ou pedir o que mereço porque tenho medo de aparecer demais.">Evito me candidatar ou pedir o que mereço porque tenho medo de aparecer demais.</div>
-          </div>
-
-          <div class="options" id="opt-cena-cnpj" style="display:none;">
-            <div class="option" data-value="Já baixei meu preço no meio da negociação só pra não perder o cliente.">Já baixei meu preço no meio da negociação só pra não perder o cliente.</div>
-            <div class="option" data-value="Enrolo pra mandar a proposta porque tenho medo de parecer caro demais.">Enrolo pra mandar a proposta porque tenho medo de parecer caro demais.</div>
-            <div class="option" data-value="Entrego mais do que foi combinado pra justificar o valor que cobrei.">Entrego mais do que foi combinado pra justificar o valor que cobrei.</div>
-            <div class="option" data-value="Evito aparecer oferecendo meu trabalho porque parece que estou me vendendo demais.">Evito aparecer oferecendo meu trabalho porque parece que estou me vendendo demais.</div>
-            <div class="option" data-value="Já travei na hora de simplesmente falar o preço em voz alta.">Já travei na hora de simplesmente falar o preço em voz alta.</div>
-          </div>
+        <div class="step-label">3 de 15</div>
+        <h2>Quando alguém discorda de você numa reunião, negociação ou conversa profissional, qual cena mais parece com você?</h2>
+        <div class="options" id="opt-q3">
+          <div class="option" data-value="Começo a explicar muito para tentar convencer">Começo a explicar muito para tentar convencer</div>
+          <div class="option" data-value="Cedo para evitar conflito">Cedo para evitar conflito</div>
+          <div class="option" data-value="Fico quieta na hora e remoendo depois">Fico quieta na hora e remoendo depois</div>
+          <div class="option" data-value="Endureço e tento provar que estou certa">Endureço e tento provar que estou certa</div>
+          <div class="option" data-value="Consigo ouvir, responder e continuar sustentando minha posição">Consigo ouvir, responder e continuar sustentando minha posição</div>
         </div>
-
-        <input type="hidden" id="cena" name="cena" />
-        <div class="error-msg" id="err-cena">Escolhe uma opção pra continuar.</div>
-
-        <p class="desc" style="margin-top:20px;margin-bottom:8px;">Quer contar com suas palavras? (opcional)</p>
-        <textarea id="cena_detalhe" name="cena_detalhe" placeholder="Escreva aqui, se quiser"></textarea>
-
+        <input type="hidden" id="q3_discordancia" name="3_quando_discordam" />
+        <div class="error-msg" id="err-q3_discordancia">Escolhe uma opção pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('cena')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q3_discordancia')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 4: SABER X SUSTENTAR -->
+      <!-- Q4 -->
       <div class="screen" data-screen="4">
-        <div class="step-label">4 de 12</div>
-        <h2>O que você sabe que precisa fazer diferente, mas continua não conseguindo sustentar?</h2>
-        <p class="desc">Pode ser uma frase simples. Não precisa ter a resposta pronta.</p>
-        <textarea id="sustentar" name="sustentar" placeholder="Escreva aqui"></textarea>
-        <div class="error-msg" id="err-sustentar">Me conta um pouquinho pra eu poder te ler direito.</div>
+        <div class="step-label">4 de 15</div>
+        <h2>Quando precisa falar de dinheiro, o que mais acontece?</h2>
+        <div class="options" id="opt-q4">
+          <div class="option" data-value="Já ofereço desconto antes de pedirem">Já ofereço desconto antes de pedirem</div>
+          <div class="option" data-value="Explico demais por que custa aquilo">Explico demais por que custa aquilo</div>
+          <div class="option" data-value="Enrolo para mandar proposta ou orçamento">Enrolo para mandar proposta ou orçamento</div>
+          <div class="option" data-value="Fico desconfortável falando o preço">Fico desconfortável falando o preço</div>
+          <div class="option" data-value="Cobro, mas depois compenso entregando muito mais">Cobro, mas depois compenso entregando muito mais</div>
+          <div class="option" data-value="Consigo falar o preço e esperar a resposta">Consigo falar o preço e esperar a resposta</div>
+        </div>
+        <input type="hidden" id="q4_dinheiro" name="4_falar_de_dinheiro" />
+        <div class="error-msg" id="err-q4_dinheiro">Escolhe uma opção pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('sustentar')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q4_dinheiro')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 5: O PADRÃO EM AÇÃO -->
+      <!-- Q5 -->
       <div class="screen" data-screen="5">
-        <div class="step-label">5 de 12</div>
-        <h2>Quando alguém discorda de você no trabalho, o que você mais faz?</h2>
-        <div class="options" id="opt-padrao">
-          <div class="option" data-value="Assumo e resolvo antes que vire outro problema pra mim resolver.">Assumo e resolvo antes que vire outro problema pra mim resolver.</div>
-          <div class="option" data-value="Fico remoendo depois se eu deveria ter dito alguma coisa.">Fico remoendo depois se eu deveria ter dito alguma coisa.</div>
-          <div class="option" data-value="Só me convenço quando tenho certeza absoluta que estou certa.">Só me convenço quando tenho certeza absoluta que estou certa.</div>
-          <div class="option" data-value="Cedo pra não criar climão, mesmo sabendo que eu tinha razão.">Cedo pra não criar climão, mesmo sabendo que eu tinha razão.</div>
-        </div>
-        <input type="hidden" id="padrao" name="padrao" />
-        <div class="error-msg" id="err-padrao">Escolhe uma opção pra continuar.</div>
+        <div class="step-label">5 de 15</div>
+        <h2>Pensa nos últimos 30 dias: qual conversa profissional você sabe que precisava ter e ainda não teve?</h2>
+        <textarea id="q5_conversa" name="5_conversa_pendente" placeholder="Escreva aqui"></textarea>
+        <div class="error-msg" id="err-q5_conversa">Me conta um pouquinho pra eu poder te ler direito.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('padrao')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q5_conversa')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 6: O QUE JA TENTOU -->
+      <!-- Q6 -->
       <div class="screen" data-screen="6">
-        <div class="step-label">6 de 12</div>
-        <h2>Você já tentou resolver isso de alguma forma?</h2>
-        <div class="options" id="opt-tentativas">
-          <div class="option" data-value="Já fiz terapia, mentoria, coaching ou acompanhamento.">Já fiz terapia, mentoria, coaching ou acompanhamento.</div>
-          <div class="option" data-value="Já tentei cursos, livros ou conteúdos por conta própria.">Já tentei cursos, livros ou conteúdos por conta própria.</div>
-          <div class="option" data-value="Já conversei com pessoas próximas, mas continuo no mesmo lugar.">Já conversei com pessoas próximas, mas continuo no mesmo lugar.</div>
-          <div class="option" data-value="Sei que preciso olhar isso, mas ainda não fiz nada.">Sei que preciso olhar isso, mas ainda não fiz nada.</div>
-          <div class="option" data-value="É a primeira vez que estou buscando ajuda.">É a primeira vez que estou buscando ajuda.</div>
+        <div class="step-label">6 de 15</div>
+        <h2>Quando você sente que não está sendo reconhecida como gostaria, o que mais costuma fazer?</h2>
+        <div class="options" id="opt-q6">
+          <div class="option" data-value="Trabalho ainda mais">Trabalho ainda mais</div>
+          <div class="option" data-value="Tento mostrar tudo o que fiz">Tento mostrar tudo o que fiz</div>
+          <div class="option" data-value="Fico frustrada e penso em sair">Fico frustrada e penso em sair</div>
+          <div class="option" data-value="Me calo, mas fico ressentida">Me calo, mas fico ressentida</div>
+          <div class="option" data-value="Converso de forma objetiva sobre meu trabalho e meu próximo passo">Converso de forma objetiva sobre meu trabalho e meu próximo passo</div>
+          <div class="option" data-value="Não sei dizer">Não sei dizer</div>
         </div>
-        <input type="hidden" id="tentativas" name="tentativas" />
-        <div class="error-msg" id="err-tentativas">Escolhe uma opção pra continuar.</div>
+        <input type="hidden" id="q6_reconhecimento" name="6_falta_de_reconhecimento" />
+        <div class="error-msg" id="err-q6_reconhecimento">Escolhe uma opção pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('tentativas')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q6_reconhecimento')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 7: O CUSTO -->
+      <!-- Q7 -->
       <div class="screen" data-screen="7">
-        <div class="step-label">7 de 12</div>
-        <h2>O que isso já te custou?</h2>
-        <p class="desc">Pode ser dinheiro, oportunidade, energia, ou só a sensação de estar sempre cansada.</p>
-        <textarea id="custo" name="custo" placeholder="Escreva aqui"></textarea>
-        <div class="error-msg" id="err-custo">Me conta um pouquinho pra eu entender o peso disso.</div>
+        <div class="step-label">7 de 15</div>
+        <h2>Qual dessas frases você mais se pega pensando?</h2>
+        <div class="options" id="opt-q7">
+          <div class="option" data-value="Se eu não fizer, ninguém faz direito.">"Se eu não fizer, ninguém faz direito."</div>
+          <div class="option" data-value="Eu sei que preciso falar, mas não quero arrumar problema.">"Eu sei que preciso falar, mas não quero arrumar problema."</div>
+          <div class="option" data-value="Eu faço tanto e parece que ninguém vê.">"Eu faço tanto e parece que ninguém vê."</div>
+          <div class="option" data-value="Quando eu estiver mais preparada, eu faço.">"Quando eu estiver mais preparada, eu faço."</div>
+          <div class="option" data-value="Tenho medo de cobrar e perder.">"Tenho medo de cobrar e perder."</div>
+          <div class="option" data-value="Se eu disser não, vão achar que não sou comprometida.">"Se eu disser não, vão achar que não sou comprometida."</div>
+          <div class="option" data-value="Eu sei que alguma coisa precisa mudar, mas não consigo enxergar exatamente o que.">"Eu sei que alguma coisa precisa mudar, mas não consigo enxergar exatamente o quê."</div>
+        </div>
+        <input type="hidden" id="q7_frase" name="7_frase_recorrente" />
+        <div class="error-msg" id="err-q7_frase">Escolhe uma opção pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('custo')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q7_frase')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 8: POR QUE AGORA -->
+      <!-- Q8 -->
       <div class="screen" data-screen="8">
-        <div class="step-label">8 de 12</div>
-        <h2>Por que agora?</h2>
-        <p class="desc">O que te fez procurar isso hoje, e não há 6 meses ou daqui a 6 meses?</p>
-        <textarea id="agora" name="agora" placeholder="Escreva aqui"></textarea>
-        <div class="error-msg" id="err-agora">Me conta um pouquinho pra continuar.</div>
+        <div class="step-label">8 de 15</div>
+        <h2>Há quanto tempo esse tipo de situação se repete na sua vida profissional?</h2>
+        <div class="options" id="opt-q8">
+          <div class="option" data-value="Começou recentemente">Começou recentemente</div>
+          <div class="option" data-value="Entre 6 meses e 1 ano">Entre 6 meses e 1 ano</div>
+          <div class="option" data-value="Há alguns anos">Há alguns anos</div>
+          <div class="option" data-value="Mudam as empresas, clientes ou pessoas, mas a situação parece se repetir">Mudam as empresas, clientes ou pessoas, mas a situação parece se repetir</div>
+        </div>
+        <input type="hidden" id="q8_tempo" name="8_ha_quanto_tempo" />
+        <div class="error-msg" id="err-q8_tempo">Escolhe uma opção pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('agora')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q8_tempo')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 9: PRIORIDADE -->
+      <!-- Q9 (multipla escolha) -->
       <div class="screen" data-screen="9">
-        <div class="step-label">9 de 12</div>
-        <h2>Quanto resolver isso é prioridade para você hoje?</h2>
-        <div class="options" id="opt-prioridade">
-          <div class="option" data-value="Preciso resolver agora.">Preciso resolver agora.</div>
-          <div class="option" data-value="Quero resolver nos próximos 30 dias.">Quero resolver nos próximos 30 dias.</div>
-          <div class="option" data-value="É importante, mas ainda estou entendendo.">É importante, mas ainda estou entendendo.</div>
-          <div class="option" data-value="Estou apenas olhando possibilidades.">Estou apenas olhando possibilidades.</div>
+        <div class="step-label">9 de 15</div>
+        <h2>O que isso já te custou na prática?</h2>
+        <p class="multi-hint">Você pode marcar mais de uma opção.</p>
+        <div class="options" id="opt-q9">
+          <div class="option" data-value="Dinheiro">Dinheiro</div>
+          <div class="option" data-value="Promoção ou oportunidade">Promoção ou oportunidade</div>
+          <div class="option" data-value="Clientes">Clientes</div>
+          <div class="option" data-value="Energia">Energia</div>
+          <div class="option" data-value="Tempo">Tempo</div>
+          <div class="option" data-value="Respeito ou posicionamento">Respeito ou posicionamento</div>
+          <div class="option" data-value="Qualidade de vida">Qualidade de vida</div>
+          <div class="option" data-value="Ainda não sei mensurar">Ainda não sei mensurar</div>
         </div>
-        <input type="hidden" id="prioridade" name="prioridade" />
-        <div class="error-msg" id="err-prioridade">Escolhe uma opção pra continuar.</div>
+        <input type="hidden" id="q9_custo" name="9_custo" />
+        <div class="error-msg" id="err-q9_custo">Escolhe pelo menos uma opção pra continuar.</div>
+        <p class="desc" style="margin-top:12px;margin-bottom:8px;font-size:14px;">Se quiser, me conta uma situação que represente bem esse custo. (opcional)</p>
+        <textarea id="q9_custo_detalhe" name="9_custo_detalhe" placeholder="Escreva aqui, se quiser"></textarea>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('prioridade')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q9_custo')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 10: PRONTIDAO PARA INVESTIR (sem valor, ver nota) -->
+      <!-- Q10 -->
       <div class="screen" data-screen="10">
-        <div class="step-label">10 de 12</div>
-        <h2>Se, depois da minha leitura, eu entender que a sessão faz sentido pro seu momento, você estaria pronta pra investir num acompanhamento individual como esse hoje?</h2>
-        <p class="desc">É uma sessão individual premium, não um curso ou mentoria em grupo.</p>
-        <div class="options" id="opt-investimento">
+        <div class="step-label">10 de 15</div>
+        <h2>O que você já tentou para mudar isso?</h2>
+        <div class="options" id="opt-q10">
+          <div class="option" data-value="Terapia">Terapia</div>
+          <div class="option" data-value="Mentoria ou coaching">Mentoria ou coaching</div>
+          <div class="option" data-value="Cursos ou treinamentos">Cursos ou treinamentos</div>
+          <div class="option" data-value="Livros ou conteúdos">Livros ou conteúdos</div>
+          <div class="option" data-value="Conversas com liderança, sócio, equipe ou pessoas próximas">Conversas com liderança, sócio, equipe ou pessoas próximas</div>
+          <div class="option" data-value="Já prometi para mim mesma que faria diferente">Já prometi para mim mesma que faria diferente</div>
+          <div class="option" data-value="Ainda não tentei nada">Ainda não tentei nada</div>
+        </div>
+        <input type="hidden" id="q10_tentativas" name="10_ja_tentou" />
+        <div class="error-msg" id="err-q10_tentativas">Escolhe uma opção pra continuar.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" onclick="validateAndNext('q10_tentativas')">Próxima</button>
+        </div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="screen" data-screen="11">
+        <div class="step-label">11 de 15</div>
+        <h2>Nos últimos 2 anos, quanto você já investiu em desenvolvimento pessoal ou profissional?</h2>
+        <div class="options" id="opt-q11">
+          <div class="option" data-value="Ainda não investi">Ainda não investi</div>
+          <div class="option" data-value="Até R$500">Até R$500</div>
+          <div class="option" data-value="Entre R$500 e R$2.000">Entre R$500 e R$2.000</div>
+          <div class="option" data-value="Entre R$2.000 e R$5.000">Entre R$2.000 e R$5.000</div>
+          <div class="option" data-value="Mais de R$5.000">Mais de R$5.000</div>
+        </div>
+        <input type="hidden" id="q11_investimento" name="11_investimento_ultimos_2_anos" />
+        <div class="error-msg" id="err-q11_investimento">Escolhe uma opção pra continuar.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" onclick="validateAndNext('q11_investimento')">Próxima</button>
+        </div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="screen" data-screen="12">
+        <div class="step-label">12 de 15</div>
+        <h2>Hoje, isso está em qual lugar da sua prioridade?</h2>
+        <div class="options" id="opt-q12">
+          <div class="option" data-value="Preciso resolver porque já está me custando caro">Preciso resolver porque já está me custando caro</div>
+          <div class="option" data-value="Quero resolver nos próximos 30 dias">Quero resolver nos próximos 30 dias</div>
+          <div class="option" data-value="É importante, mas ainda estou tentando entender">É importante, mas ainda estou tentando entender</div>
+          <div class="option" data-value="Sei que preciso olhar para isso, mas continuo adiando">Sei que preciso olhar para isso, mas continuo adiando</div>
+          <div class="option" data-value="Estou apenas conhecendo possibilidades agora">Estou apenas conhecendo possibilidades agora</div>
+        </div>
+        <input type="hidden" id="q12_prioridade" name="12_prioridade" />
+        <div class="error-msg" id="err-q12_prioridade">Escolhe uma opção pra continuar.</div>
+        <div class="nav-row">
+          <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
+          <button type="button" class="btn" onclick="validateAndNext('q12_prioridade')">Próxima</button>
+        </div>
+      </div>
+
+      <!-- Q13 -->
+      <div class="screen" data-screen="13">
+        <div class="step-label">13 de 15</div>
+        <h2>Se eu perceber que consigo te ajudar em uma sessão individual, hoje você teria disponibilidade para investir a partir de R$500 nesse atendimento?</h2>
+        <div class="options" id="opt-q13">
           <div class="option" data-value="Sim">Sim</div>
-          <div class="option" data-value="Talvez, quero entender melhor primeiro">Talvez, quero entender melhor primeiro</div>
+          <div class="option" data-value="Talvez, preciso entender melhor antes">Talvez, preciso entender melhor antes</div>
           <div class="option" data-value="Não neste momento">Não neste momento</div>
         </div>
-        <input type="hidden" id="investimento" name="investimento" />
-        <div class="error-msg" id="err-investimento">Escolhe uma opção pra continuar.</div>
+        <input type="hidden" id="q13_prontidao" name="13_prontidao_investir" />
+        <div class="error-msg" id="err-q13_prontidao">Escolhe uma opção pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('investimento')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q13_prontidao')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 11: NOME -->
-      <div class="screen" data-screen="11">
-        <div class="step-label">11 de 12</div>
+      <!-- Q14 -->
+      <div class="screen" data-screen="14">
+        <div class="step-label">14 de 15</div>
         <h2>Como você gostaria que eu te chamasse?</h2>
-        <input type="text" id="nome" name="nome" placeholder="Seu nome" autocomplete="name" />
-        <div class="error-msg" id="err-nome">Preciso do seu nome pra continuar.</div>
+        <input type="text" id="q14_nome" name="14_nome" placeholder="Seu nome" autocomplete="name" />
+        <div class="error-msg" id="err-q14_nome">Preciso do seu nome pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
-          <button type="button" class="btn" onclick="validateAndNext('nome')">Próxima</button>
+          <button type="button" class="btn" onclick="validateAndNext('q14_nome')">Próxima</button>
         </div>
       </div>
 
-      <!-- TELA 12: CONTATO -->
-      <div class="screen" data-screen="12">
-        <div class="step-label">12 de 12</div>
-        <h2>Pra onde eu te mando minha leitura?</h2>
-        <p class="desc">WhatsApp com DDD, ou seu e-mail.</p>
-        <input type="text" id="contato" name="contato" placeholder="Ex: (11) 99999-9999 ou seuemail@exemplo.com" autocomplete="tel" />
-        <div class="error-msg" id="err-contato">Preciso de um jeito de te responder.</div>
+      <!-- Q15 -->
+      <div class="screen" data-screen="15">
+        <div class="step-label">15 de 15</div>
+        <h2>Pra onde eu posso te mandar minha leitura?</h2>
+        <p class="desc">WhatsApp com DDD.</p>
+        <input type="text" id="q15_contato" name="15_whatsapp" placeholder="Ex: (11) 99999-9999" autocomplete="tel" />
+        <div class="error-msg" id="err-q15_contato">Preciso do seu WhatsApp pra continuar.</div>
         <div class="nav-row">
           <button type="button" class="btn btn-voltar" onclick="prevScreen()">Voltar</button>
           <button type="button" class="btn" id="submitBtn" onclick="submitForm()">Enviar e receber minha leitura</button>
         </div>
       </div>
 
-      <!-- TELA 13: ENCERRAMENTO -->
-      <div class="screen center-screen" data-screen="13">
+      <!-- ENCERRAMENTO -->
+      <div class="screen center-screen" data-screen="16">
         <div class="outro-icon">✓</div>
-        <h1>Recebi.</h1>
-        <p class="desc">Vou assistir com calma e te responder em vídeo pessoal em até 48 horas, no mesmo contato que você deixou aqui. Enquanto isso, respira: você já deu um passo que a maioria nunca dá.</p>
-        <a href="index.html" class="outro-link">Enquanto espera, veja como funciona a sessão</a>
+        <h1>Obrigada por me contar um pouco do que está acontecendo.</h1>
+        <p class="desc">Eu vou olhar suas respostas com atenção e, se eu entender que uma sessão individual pode realmente te ajudar, entro em contato para te explicar o próximo passo.</p>
       </div>
 
       <!-- TELA DE ERRO NO ENVIO -->
-      <div class="screen center-screen" data-screen="14">
+      <div class="screen center-screen" data-screen="17">
         <div class="outro-icon">!</div>
         <h1>Algo não funcionou.</h1>
         <p class="desc">Não consegui enviar sua resposta agora. Tenta de novo em alguns instantes, ou me chama direto no <a href="https://wa.me/5511920701603" style="color:var(--accent);">WhatsApp</a>.</p>
@@ -503,7 +565,7 @@
     var current = 0;
 
     function updateProgress() {
-      var pct = Math.min((current / 12) * 100, 100);
+      var pct = Math.min((current / 15) * 100, 100);
       document.getElementById('progressBar').style.width = pct + '%';
     }
 
@@ -527,9 +589,9 @@
       showScreen(current - 1);
     }
 
-    // Selecao de opcoes (multipla escolha) para grupos simples
+    // Selecao de opcoes de escolha unica
     document.querySelectorAll('.options').forEach(function (group) {
-      if (group.id === 'opt-cena-clt' || group.id === 'opt-cena-cnpj') return;
+      if (group.id === 'opt-q9') return; // multipla escolha, tratado a parte
       group.addEventListener('click', function (e) {
         var opt = e.target.closest('.option');
         if (!opt) return;
@@ -542,59 +604,31 @@
       });
     });
 
-    // Revela campo de detalhe quando "Outro" e escolhido na tela 1
-    var incomodoGroup = document.getElementById('opt-incomodo');
-    var incomodoDetalheWrap = document.getElementById('incomodo-detalhe-wrap');
-    incomodoGroup.addEventListener('click', function (e) {
+    // Revela campo de detalhe quando "Outra situacao" e escolhida na Q1
+    var q1Group = document.getElementById('opt-q1');
+    var q1DetalheWrap = document.getElementById('q1-detalhe-wrap');
+    q1Group.addEventListener('click', function (e) {
       var opt = e.target.closest('.option');
       if (!opt) return;
-      if (opt.getAttribute('data-value') === 'Outro') {
-        incomodoDetalheWrap.style.display = '';
+      if (opt.getAttribute('data-value') === 'Outra situação') {
+        q1DetalheWrap.style.display = '';
       } else {
-        incomodoDetalheWrap.style.display = 'none';
+        q1DetalheWrap.style.display = 'none';
       }
     });
 
-    // Selecao de opcoes da tela "cena real" (compartilha um unico campo hidden entre dois grupos ramificados)
-    var cenaWrapper = document.getElementById('cena-options-wrapper');
-    var cenaHidden = document.getElementById('cena');
-    cenaWrapper.addEventListener('click', function (e) {
+    // Selecao de opcoes de multipla escolha (Q9)
+    var q9Group = document.getElementById('opt-q9');
+    var q9Hidden = document.getElementById('q9_custo');
+    q9Group.addEventListener('click', function (e) {
       var opt = e.target.closest('.option');
       if (!opt) return;
-      cenaWrapper.querySelectorAll('.option').forEach(function (o) {
-        o.classList.remove('selected');
+      opt.classList.toggle('selected');
+      var selected = Array.from(q9Group.querySelectorAll('.option.selected')).map(function (o) {
+        return o.getAttribute('data-value');
       });
-      opt.classList.add('selected');
-      cenaHidden.value = opt.getAttribute('data-value');
+      q9Hidden.value = selected.join('; ');
     });
-
-    function goToCena() {
-      var situacaoField = document.getElementById('situacao');
-      var errMsg = document.getElementById('err-situacao');
-      var situacao = situacaoField.value.trim();
-
-      if (!situacao) {
-        errMsg.classList.add('show');
-        return;
-      }
-      errMsg.classList.remove('show');
-
-      var cltGroup = document.getElementById('opt-cena-clt');
-      var cnpjGroup = document.getElementById('opt-cena-cnpj');
-
-      if (situacao === 'CLT') {
-        cltGroup.style.display = '';
-        cnpjGroup.style.display = 'none';
-      } else if (situacao === 'CNPJ') {
-        cltGroup.style.display = 'none';
-        cnpjGroup.style.display = '';
-      } else {
-        cltGroup.style.display = '';
-        cnpjGroup.style.display = '';
-      }
-
-      nextScreen();
-    }
 
     function validateAndNext(fieldId) {
       var field = document.getElementById(fieldId);
@@ -610,9 +644,8 @@
     }
 
     function submitForm() {
-      // valida o ultimo campo antes de enviar
-      var contatoField = document.getElementById('contato');
-      var errMsg = document.getElementById('err-contato');
+      var contatoField = document.getElementById('q15_contato');
+      var errMsg = document.getElementById('err-q15_contato');
       if (!contatoField.value.trim()) {
         errMsg.classList.add('show');
         return;
@@ -624,20 +657,23 @@
       submitBtn.textContent = 'Enviando...';
 
       var data = {
-        incomodo: document.getElementById('incomodo').value,
-        incomodo_detalhe: document.getElementById('incomodo_detalhe').value,
-        situacao: document.getElementById('situacao').value,
-        cena: document.getElementById('cena').value,
-        cena_detalhe: document.getElementById('cena_detalhe').value,
-        sustentar: document.getElementById('sustentar').value,
-        padrao: document.getElementById('padrao').value,
-        tentativas: document.getElementById('tentativas').value,
-        custo: document.getElementById('custo').value,
-        agora: document.getElementById('agora').value,
-        prioridade: document.getElementById('prioridade').value,
-        investimento: document.getElementById('investimento').value,
-        nome: document.getElementById('nome').value,
-        contato: document.getElementById('contato').value
+        '1_situacao_recente': document.getElementById('q1_situacao').value,
+        '1_situacao_detalhe': document.getElementById('q1_detalhe').value,
+        '2_reacao_ao_outro': document.getElementById('q2_reacao').value,
+        '3_quando_discordam': document.getElementById('q3_discordancia').value,
+        '4_falar_de_dinheiro': document.getElementById('q4_dinheiro').value,
+        '5_conversa_pendente': document.getElementById('q5_conversa').value,
+        '6_falta_de_reconhecimento': document.getElementById('q6_reconhecimento').value,
+        '7_frase_recorrente': document.getElementById('q7_frase').value,
+        '8_ha_quanto_tempo': document.getElementById('q8_tempo').value,
+        '9_custo': document.getElementById('q9_custo').value,
+        '9_custo_detalhe': document.getElementById('q9_custo_detalhe').value,
+        '10_ja_tentou': document.getElementById('q10_tentativas').value,
+        '11_investimento_ultimos_2_anos': document.getElementById('q11_investimento').value,
+        '12_prioridade': document.getElementById('q12_prioridade').value,
+        '13_prontidao_investir': document.getElementById('q13_prontidao').value,
+        '14_nome': document.getElementById('q14_nome').value,
+        '15_whatsapp': document.getElementById('q15_contato').value
       };
 
       fetch('https://formspree.io/f/myezzbak', {
@@ -652,15 +688,15 @@
           submitBtn.disabled = false;
           submitBtn.textContent = 'Enviar e receber minha leitura';
           if (response.ok) {
-            showScreen(13);
+            showScreen(16);
           } else {
-            showScreen(14);
+            showScreen(17);
           }
         })
         .catch(function () {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Enviar e receber minha leitura';
-          showScreen(14);
+          showScreen(17);
         });
     }
 
